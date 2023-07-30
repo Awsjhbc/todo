@@ -1,0 +1,12 @@
+.span_icon {
+  display: flex;
+}
+
+.button {
+}
+
+.input {
+  display: flex;
+  justify-content: center;
+  margin-top: -27px;
+}
