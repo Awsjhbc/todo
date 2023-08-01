@@ -1,16 +1,18 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const useInputState = (initialValue) => {
   const [value, setValue] = useState(initialValue);
   const [tasks, setTasks] = useState([]);
   const [editingTaskIndex, setEditingTaskIndex] = useState(null);
-  const [editedTask, setEditedTask] = useState('');
+  const [editedTask, setEditedTask] = useState("");
+  const [taskCount, setTaskCount] = useState(0);
 
   const addTask = () => {
-    if (value.trim() !== '') {
+    if (value.trim() !== "") {
       setTasks([...tasks, value]);
-      setValue('');
+      setValue("");
+      setTaskCount(taskCount + 1);
     }
   };
 
@@ -27,22 +29,23 @@ const useInputState = (initialValue) => {
 
   const cancelEditing = () => {
     setEditingTaskIndex(null);
-    setEditedTask('');
+    setEditedTask("");
   };
 
   const saveEditedTask = () => {
-    if (editedTask.trim() !== '') {
+    if (editedTask.trim() !== "") {
       const newTasks = [...tasks];
       newTasks[editingTaskIndex] = editedTask;
       setTasks(newTasks);
       setEditingTaskIndex(null);
-      setEditedTask('');
+      setEditedTask("");
     }
   };
 
   return {
     value,
     tasks,
+    taskCount,
     editingTaskIndex,
     editedTask,
     onChange: (event) => {
