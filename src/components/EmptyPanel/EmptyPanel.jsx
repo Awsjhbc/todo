@@ -1,7 +1,4 @@
 import styles from "./EmptyPanel.module.css";
-// import MainTheme from "./MainTheme/MainTheme";
-
-import TodoList from "../TodoList/TodoList";
 
 // eslint-disable-next-line react/prop-types
 const EmptyPanel = ({ TaskValueCounter }) => {
@@ -19,10 +16,7 @@ const EmptyPanel = ({ TaskValueCounter }) => {
               <p className={styles.completed_text}>Completed tasks 0</p>
             </div>
           </div>
-          <div className={styles.empty}>
-            <TodoList />
-            {/* <MainTheme /> */}
-          </div>
+          <div className={styles.empty}>{/**/}</div>
         </div>
       </div>
     </>

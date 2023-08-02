@@ -7,12 +7,18 @@ const useInputState = (initialValue) => {
   const [editingTaskIndex, setEditingTaskIndex] = useState(null);
   const [editedTask, setEditedTask] = useState("");
   const [taskCount, setTaskCount] = useState(0);
+  const [isTasksAdded, setIsTasksAdded] = useState(false);
+
+  const TaskAdded = () => {
+    setIsTasksAdded(true);
+  };
 
   const addTask = () => {
     if (value.trim() !== "") {
       setTasks([...tasks, value]);
       setValue("");
       setTaskCount(taskCount + 1);
+      TaskAdded();
     }
   };
 
@@ -42,15 +48,19 @@ const useInputState = (initialValue) => {
     }
   };
 
+  const onChange = (event) => {
+    setValue(event.target.value);
+  };
+
   return {
+    isTasksAdded,
     value,
     tasks,
     taskCount,
     editingTaskIndex,
     editedTask,
-    onChange: (event) => {
-      setValue(event.target.value);
-    },
+    TaskAdded,
+    onChange,
     addTask,
     deleteTask,
     startEditing,

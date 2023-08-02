@@ -1,12 +1,11 @@
+/* eslint-disable react/prop-types */
 import styles from "./Input.module.css";
-import Button from "../Button/button";
+
 import Plus from "../../assets/plus.svg";
 
-import useInputState from "../Hooks/InputHook/useInputState";
+import Button from "../button/button";
 
-const InputForm = () => {
-  const TaskValue = useInputState("");
-
+const InputForm = ({ value, onChange, onAddTask }) => {
   return (
     <div className={styles.input}>
       <div className="createTask">
@@ -15,11 +14,11 @@ const InputForm = () => {
           type="textarea"
           className="input"
           placeholder="Create new task"
-          value={TaskValue.value}
-          onChange={TaskValue.onChange}
+          value={value}
+          onChange={onChange}
         />
 
-        <Button onClick={TaskValue.addTask} className={styles.button}>
+        <Button onClick={onAddTask} className={styles.button}>
           Create{" "}
           <span className={styles.span_icon}>
             <img src={Plus} alt="" />

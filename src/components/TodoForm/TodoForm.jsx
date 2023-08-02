@@ -1,10 +1,9 @@
-import Button from "../button/button";
-import Plus from "../icon/plus.svg";
-import styles from "./TodoForm.module.css";
-
 import useInputState from "../Hooks/InputHook/useInputState";
-import EmptyPanel from "../EmptyPanel/EmptyPanel";
+// UNUSED COMPONENT import EmptyPanel from "../EmptyPanel/EmptyPanel";
 import InputForm from "../Input/Input";
+import TodoList from "../TodoList/TodoList";
+import styles from "./TodoForm.module.css";
+import MainTheme from "../EmptyPanel/MainTheme/MainTheme";
 
 // eslint-disable-next-line react/prop-types
 const TodoForm = ({ saveTodo }) => {
@@ -19,59 +18,33 @@ const TodoForm = ({ saveTodo }) => {
         TaskValue.reset();
       }}
     >
-      {/* <InputForm /> */}
-      <div className={styles.input}>
-        <div className="createTask">
-          <input
-            name="description"
-            type="textarea"
-            className="input"
-            placeholder="Create new task"
-            value={TaskValue.value}
-            onChange={TaskValue.onChange}
-          />
-
-          <Button onClick={TaskValue.addTask} className={styles.button}>
-            Create{" "}
-            <span className={styles.span_icon}>
-              <img src={Plus} alt="" />
-            </span>{" "}
-          </Button>
+      <InputForm
+        value={TaskValue.value}
+        onChange={TaskValue.onChange}
+        onAddTask={TaskValue.addTask}
+      />
+      {/* UNUSED COMPONENT <EmptyPanel TaskValueCounter={TaskValue.taskCount} /> */}
+      <div className={styles.task_body}>
+        <div className={styles.tasks}>
+          <div className={styles.info}>
+            <div className={styles.created}>
+              <p className={styles.created_text}>
+                Created tasks {TaskValue.taskCount}
+              </p>
+            </div>
+            <div>
+              <p className={styles.completed_text}>Completed tasks 0</p>
+            </div>
+          </div>
+          <div className={styles.empty}>
+            {TaskValue.isTasksAdded ? (
+              <TodoList TaskL={TaskValue.tasks} />
+            ) : (
+              <MainTheme />
+            )}
+          </div>
         </div>
       </div>
-      <EmptyPanel TaskValueCounter={TaskValue.taskCount} />
-      <ul className={styles.TaskList}>
-        {TaskValue.tasks.map((task, index) => (
-          <li key={index} className={styles.TaskItem}>
-            {TaskValue.editingTaskIndex === index ? (
-              <>
-                <input
-                  type="text"
-                  value={TaskValue.editedTask}
-                  onChange={TaskValue.handleEditTaskChange}
-                />
-
-                <Button onClick={TaskValue.saveEditedTask}>Сохранить</Button>
-                <Button onClick={TaskValue.cancelEditing}>Отмена</Button>
-              </>
-            ) : (
-              <>
-                <label className={styles.label}>
-                  <input type="checkbox" className={styles.checkbox_none} />
-                  <span className={styles.checkbox}></span>
-                  {task}
-                  <Button onClick={() => TaskValue.startEditing(index)}>
-                    Редактировать
-                  </Button>
-                  <Button onClick={() => TaskValue.deleteTask(index)}>
-                    <span className={styles.trash_icon}></span>
-                  </Button>
-                </label>
-              </>
-            )}
-          </li>
-        ))}
-      </ul>
     </form>
   );
 };
