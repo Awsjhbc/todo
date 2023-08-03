@@ -26,6 +26,7 @@ const useInputState = (initialValue) => {
     const newTasks = [...tasks];
     newTasks.splice(index, 1);
     setTasks(newTasks);
+    setTaskCount(taskCount - 1);
   };
 
   const startEditing = (index) => {
