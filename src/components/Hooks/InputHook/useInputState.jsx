@@ -39,7 +39,7 @@ const useInputState = (initialValue) => {
   };
 
   const saveEditedTask = () => {
-    if (editedTask.trim() !== "") {
+    if (editedTask !== "") {
       const newTasks = [...tasks];
       newTasks[editingTaskIndex] = editedTask;
       setTasks(newTasks);
@@ -52,6 +52,10 @@ const useInputState = (initialValue) => {
     setValue(event.target.value);
   };
 
+  const handleReset = () => {
+    setValue(initialValue);
+  };
+
   return {
     isTasksAdded,
     value,
@@ -60,6 +64,7 @@ const useInputState = (initialValue) => {
     editingTaskIndex,
     editedTask,
     TaskAdded,
+    reset: handleReset,
     onChange,
     addTask,
     deleteTask,

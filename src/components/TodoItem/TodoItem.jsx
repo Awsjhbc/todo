@@ -3,7 +3,7 @@ import styles from "./TodoItem.module.css";
 import useInputState from "../Hooks/InputHook/useInputState";
 import Button from "../button/button";
 
-const TodoItem = ({ task, index }) => {
+const TodoItem = ({ task, index, onDelete }) => {
   const TaskValue = useInputState("");
 
   return (
@@ -27,7 +27,7 @@ const TodoItem = ({ task, index }) => {
           <Button onClick={() => TaskValue.startEditing(index)}>
             Редактировать
           </Button>
-          <Button onClick={() => TaskValue.deleteTask(index)}>
+          <Button onClick={() => onDelete(index)}>
             <span className={styles.trash_icon}></span>
           </Button>
         </label>

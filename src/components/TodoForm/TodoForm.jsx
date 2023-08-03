@@ -6,7 +6,7 @@ import styles from "./TodoForm.module.css";
 import MainTheme from "../EmptyPanel/MainTheme/MainTheme";
 
 // eslint-disable-next-line react/prop-types
-const TodoForm = ({ saveTodo }) => {
+const TodoForm = () => {
   const TaskValue = useInputState("");
 
   return (
@@ -14,8 +14,8 @@ const TodoForm = ({ saveTodo }) => {
       onSubmit={(event) => {
         event.preventDefault();
 
-        saveTodo(TaskValue.value);
-        TaskValue.reset();
+        TaskValue.value;
+        TaskValue.reset;
       }}
     >
       <InputForm
@@ -38,7 +38,10 @@ const TodoForm = ({ saveTodo }) => {
           </div>
           <div className={styles.empty}>
             {TaskValue.isTasksAdded ? (
-              <TodoList TaskL={TaskValue.tasks} />
+              <TodoList
+                TaskL={TaskValue.tasks}
+                onDelete={TaskValue.deleteTask}
+              />
             ) : (
               <MainTheme />
             )}
