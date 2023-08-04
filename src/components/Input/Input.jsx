@@ -3,7 +3,7 @@ import styles from "./Input.module.css";
 
 import Plus from "../../assets/plus.svg";
 
-import Button from "../button/button";
+import Button from "../Button/Button";
 
 const InputForm = ({ value, onChange, onAddTask }) => {
   return (
@@ -18,7 +18,7 @@ const InputForm = ({ value, onChange, onAddTask }) => {
           onChange={onChange}
         />
 
-        <Button onClick={onAddTask} className={styles.button}>
+        <Button onClick={onAddTask}>
           Create{" "}
           <span className={styles.span_icon}>
             <img src={Plus} alt="" />

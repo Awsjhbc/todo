@@ -1,4 +1,4 @@
-import styles from "./Button.module.css";
+import styles from "./InputButton.module.css";
 import React from "react";
 
 interface ButtonProps extends React.ComponentProps<"button"> {
