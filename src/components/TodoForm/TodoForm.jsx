@@ -39,6 +39,7 @@ const TodoForm = () => {
           <div className={styles.empty}>
             {TaskValue.isTasksAdded ? (
               <TodoList
+                TaskV={TaskValue}
                 TaskL={TaskValue.tasks}
                 onDelete={TaskValue.deleteTask}
               />

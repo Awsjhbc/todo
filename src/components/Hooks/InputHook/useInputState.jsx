@@ -49,6 +49,10 @@ const useInputState = (initialValue) => {
     }
   };
 
+  const handleEditTaskChange = (event) => {
+    setEditedTask(event.target.value);
+  };
+
   const onChange = (event) => {
     setValue(event.target.value);
   };
@@ -66,6 +70,7 @@ const useInputState = (initialValue) => {
     editedTask,
     TaskAdded,
     reset: handleReset,
+    handleEditTaskChange,
     onChange,
     addTask,
     deleteTask,
