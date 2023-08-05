@@ -14,6 +14,8 @@ const TodoList = ({ TaskL, onDelete, TaskV }) => {
           index={index}
           onDelete={onDelete}
           TaskV={TaskV}
+          onCompleteChange={() => TaskV.handleCheckboxChange(index)}
+          isCompleted={TaskV.completedTasks.includes(index)}
         />
       ))}
     </ul>

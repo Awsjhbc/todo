@@ -33,7 +33,9 @@ const TodoForm = () => {
               </p>
             </div>
             <div>
-              <p className={styles.completed_text}>Completed tasks 0</p>
+              <p className={styles.completed_text}>
+                Completed tasks {TaskValue.completedTasks.length}
+              </p>
             </div>
           </div>
           <div className={styles.empty}>
@@ -42,6 +44,7 @@ const TodoForm = () => {
                 TaskV={TaskValue}
                 TaskL={TaskValue.tasks}
                 onDelete={TaskValue.deleteTask}
+                onCompleteChange={TaskValue.handleCheckboxChange}
               />
             ) : (
               <MainTheme />

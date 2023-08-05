@@ -3,7 +3,14 @@ import styles from "./TodoItem.module.css";
 
 import InputButton from "./InputButton/InputButton";
 
-const TodoItem = ({ task, index, onDelete, TaskV }) => {
+const TodoItem = ({
+  task,
+  index,
+  onDelete,
+  TaskV,
+  onCompleteChange,
+  isCompleted,
+}) => {
   return (
     <li key={index} className={styles.TaskItem}>
       {TaskV.editingTaskIndex === index ? (
@@ -21,7 +28,12 @@ const TodoItem = ({ task, index, onDelete, TaskV }) => {
         </>
       ) : (
         <label className={styles.label}>
-          <input type="checkbox" className={styles.checkbox_none} />
+          <input
+            type="checkbox"
+            className={styles.checkbox_none}
+            checked={isCompleted} // Отмечаем выполненные задачи
+            onChange={onCompleteChange}
+          />
           <span className={styles.checkbox}></span>
           <div className={styles.task_buttons}>
             {task}

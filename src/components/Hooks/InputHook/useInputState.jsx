@@ -8,6 +8,15 @@ const useInputState = (initialValue) => {
   const [editedTask, setEditedTask] = useState("");
   const [taskCount, setTaskCount] = useState(0);
   const [isTasksAdded, setIsTasksAdded] = useState(false);
+  const [completedTasks, setCompletedTasks] = useState([]);
+
+  const handleCheckboxChange = (index) => {
+    const updatedCompletedTasks = completedTasks.includes(index)
+      ? completedTasks.filter((id) => id !== index)
+      : [...completedTasks, index];
+
+    setCompletedTasks(updatedCompletedTasks);
+  };
 
   const TaskAdded = () => {
     setIsTasksAdded(true);
@@ -25,7 +34,22 @@ const useInputState = (initialValue) => {
   const deleteTask = (index) => {
     const newTasks = [...tasks];
     newTasks.splice(index, 1);
+
+    const updatedCompletedTasks = completedTasks.filter((id) => id !== index);
+    const adjustedCompletedTasks = updatedCompletedTasks.map((id) =>
+      id > index ? id - 1 : id
+    );
+
     setTasks(newTasks);
+    setCompletedTasks(adjustedCompletedTasks);
+
+    if (editingTaskIndex === index) {
+      setEditingTaskIndex(null);
+      setEditedTask("");
+    } else if (editingTaskIndex > index) {
+      setEditingTaskIndex(editingTaskIndex - 1);
+    }
+
     setTaskCount(taskCount - 1);
   };
 
@@ -68,6 +92,8 @@ const useInputState = (initialValue) => {
     taskCount,
     editingTaskIndex,
     editedTask,
+    completedTasks,
+    handleCheckboxChange,
     TaskAdded,
     reset: handleReset,
     handleEditTaskChange,
