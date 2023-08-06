@@ -27,7 +27,11 @@ const TodoItem = ({
           </InputButton>
         </>
       ) : (
-        <label className={styles.label}>
+        <label
+          className={`${styles.label} ${
+            isCompleted ? styles["completed"] : ""
+          }`}
+        >
           <input
             type="checkbox"
             className={styles.checkbox_none}

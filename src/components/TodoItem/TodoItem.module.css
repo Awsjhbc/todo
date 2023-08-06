@@ -74,3 +74,13 @@
 .input_button {
   display: flex;
 }
+
+.completed {
+  color: var(--gray-300, #808080);
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%; /* 19.6px */
+  text-decoration: line-through;
+}
