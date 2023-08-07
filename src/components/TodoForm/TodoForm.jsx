@@ -6,7 +6,7 @@ import TodoList from "../TodoList/TodoList";
 import styles from "./TodoForm.module.css";
 
 // eslint-disable-next-line react/prop-types
-const TodoForm = () => {
+const TodoForm = ({ todos }) => {
   const TaskValue = useTodos("");
 
   return (
@@ -30,7 +30,7 @@ const TodoForm = () => {
             {TaskValue.isTodosAdded ? (
               <TodoList
                 TaskV={TaskValue}
-                TaskL={TaskValue.todos}
+                todos={todos}
                 onDelete={TaskValue.deleteTodo}
               />
             ) : (

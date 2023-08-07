@@ -6,22 +6,22 @@ const TodoItem = ({
   task,
   index,
   onDelete,
-  TaskV,
+  todos,
   onCompleteChange,
   isCompleted,
 }) => {
   return (
     <li key={index} className={styles.TodoItem}>
-      {TaskV.editingTaskIndex === index ? (
+      {todos.editingTaskIndex === index ? (
         <>
           <input
             type="text"
-            value={TaskV.editedTodo || ""}
-            onChange={TaskV.handleEditTodoChange}
+            value={todos.editedTodo || ""}
+            onChange={todos.handleEditTodoChange}
           />
 
-          <InputButton onClick={() => TaskV.saveEditedTodo()}>Save</InputButton>
-          <InputButton onClick={() => TaskV.cancelEditing()}>
+          <InputButton onClick={() => todos.saveEditedTodo()}>Save</InputButton>
+          <InputButton onClick={() => todos.cancelEditing()}>
             Cancel
           </InputButton>
         </>
@@ -41,7 +41,7 @@ const TodoItem = ({
           <div className={styles.task_buttons}>
             {task}
             <div className={styles.input_button}>
-              <InputButton onClick={() => TaskV.startEditing(index)}>
+              <InputButton onClick={() => todos.startEditing(index)}>
                 <span className={styles.pencil_icon}></span>
               </InputButton>
               <InputButton onClick={() => onDelete(index)}>
