@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 
 import TodoItem from "../TodoItem/TodoItem";
-
 import styles from "./TodoList.module.css";
 
 const TodoList = ({ TaskL, onDelete, TaskV }) => {

@@ -1,80 +1,80 @@
 import { useState } from "react";
 
 // eslint-disable-next-line react-refresh/only-export-components
-const useInputState = (initialValue) => {
+const useTodos = (initialValue) => {
   const [value, setValue] = useState(initialValue);
-  const [tasks, setTasks] = useState([]);
-  const [editingTaskIndex, setEditingTaskIndex] = useState(null);
-  const [editedTask, setEditedTask] = useState("");
-  const [taskCount, setTaskCount] = useState(0);
-  const [isTasksAdded, setIsTasksAdded] = useState(false);
-  const [completedTasks, setCompletedTasks] = useState([]);
+  const [todos, setTodos] = useState([]);
+  const [editingTodoIndex, setEditingTodoIndex] = useState(null);
+  const [editedTodo, setEditedTodo] = useState("");
+  const [todoCount, setTodoCount] = useState(0);
+  const [isTodosAdded, setIsTodosAdded] = useState(false);
+  const [completedTodos, setCompletedTodos] = useState([]);
 
   const handleCheckboxChange = (index) => {
-    const updatedCompletedTasks = completedTasks.includes(index)
-      ? completedTasks.filter((id) => id !== index)
-      : [...completedTasks, index];
+    const updatedCompletedTodos = completedTodos.includes(index)
+      ? completedTodos.filter((id) => id !== index)
+      : [...completedTodos, index];
 
-    setCompletedTasks(updatedCompletedTasks);
+    setCompletedTodos(updatedCompletedTodos);
   };
 
-  const TaskAdded = () => {
-    setIsTasksAdded(true);
+  const TodoAdded = () => {
+    setIsTodosAdded(true);
   };
 
-  const addTask = () => {
+  const addTodo = () => {
     if (value.trim() !== "") {
-      setTasks([...tasks, value]);
+      setTodos([...todos, value]);
       setValue("");
-      setTaskCount(taskCount + 1);
-      TaskAdded();
+      setTodoCount(todoCount + 1);
+      TodoAdded();
     }
   };
 
-  const deleteTask = (index) => {
-    const newTasks = [...tasks];
-    newTasks.splice(index, 1);
+  const deleteTodo = (index) => {
+    const newTodos = [...todos];
+    newTodos.splice(index, 1);
 
-    const updatedCompletedTasks = completedTasks.filter((id) => id !== index);
-    const adjustedCompletedTasks = updatedCompletedTasks.map((id) =>
+    const updatedCompletedTodos = completedTodos.filter((id) => id !== index);
+    const adjustedCompletedTodos = updatedCompletedTodos.map((id) =>
       id > index ? id - 1 : id
     );
 
-    setTasks(newTasks);
-    setCompletedTasks(adjustedCompletedTasks);
+    setTodos(newTodos);
+    setCompletedTodos(adjustedCompletedTodos);
 
-    if (editingTaskIndex === index) {
-      setEditingTaskIndex(null);
-      setEditedTask("");
-    } else if (editingTaskIndex > index) {
-      setEditingTaskIndex(editingTaskIndex - 1);
+    if (editingTodoIndex === index) {
+      setEditingTodoIndex(null);
+      setEditedTodo("");
+    } else if (editingTodoIndex > index) {
+      setEditingTodoIndex(editingTodoIndex - 1);
     }
 
-    setTaskCount(taskCount - 1);
+    setTodoCount(todoCount - 1);
   };
 
   const startEditing = (index) => {
-    setEditingTaskIndex(index);
-    setEditedTask(tasks[index]);
+    setEditingTodoIndex(index);
+    setEditedTodo(todos[index]);
   };
 
   const cancelEditing = () => {
-    setEditingTaskIndex(null);
-    setEditedTask("");
+    setEditingTodoIndex(null);
+    setEditedTodo("");
   };
 
-  const saveEditedTask = () => {
-    if (editedTask !== "") {
-      const newTasks = [...tasks];
-      newTasks[editingTaskIndex] = editedTask;
-      setTasks(newTasks);
-      setEditingTaskIndex(null);
-      setEditedTask("");
+  const saveEditedTodo = () => {
+    if (editedTodo !== "") {
+      const newTodos = [...todos];
+      newTodos[editingTodoIndex] = editedTodo;
+      setTodos(newTodos);
+      setEditingTodoIndex(null);
+      setEditedTodo("");
     }
   };
 
-  const handleEditTaskChange = (event) => {
-    setEditedTask(event.target.value);
+  const handleEditTodoChange = (event) => {
+    setEditedTodo(event.target.value);
   };
 
   const onChange = (event) => {
@@ -86,24 +86,24 @@ const useInputState = (initialValue) => {
   };
 
   return {
-    isTasksAdded,
+    isTodosAdded,
     value,
-    tasks,
-    taskCount,
-    editingTaskIndex,
-    editedTask,
-    completedTasks,
+    todos,
+    todoCount,
+    editingTodoIndex,
+    editedTodo,
+    completedTodos,
     handleCheckboxChange,
-    TaskAdded,
+    TodoAdded,
     reset: handleReset,
-    handleEditTaskChange,
+    handleEditTodoChange,
     onChange,
-    addTask,
-    deleteTask,
+    addTodo,
+    deleteTodo,
     startEditing,
     cancelEditing,
-    saveEditedTask,
+    saveEditedTodo,
   };
 };
 
-export default useInputState;
+export default useTodos;

@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
-import styles from "./TodoItem.module.css";
-
 import InputButton from "./InputButton/InputButton";
+import styles from "./TodoItem.module.css";
 
 const TodoItem = ({
   task,
@@ -12,16 +11,16 @@ const TodoItem = ({
   isCompleted,
 }) => {
   return (
-    <li key={index} className={styles.TaskItem}>
+    <li key={index} className={styles.TodoItem}>
       {TaskV.editingTaskIndex === index ? (
         <>
           <input
             type="text"
-            value={TaskV.editedTask || ""}
-            onChange={TaskV.handleEditTaskChange}
+            value={TaskV.editedTodo || ""}
+            onChange={TaskV.handleEditTodoChange}
           />
 
-          <InputButton onClick={() => TaskV.saveEditedTask()}>Save</InputButton>
+          <InputButton onClick={() => TaskV.saveEditedTodo()}>Save</InputButton>
           <InputButton onClick={() => TaskV.cancelEditing()}>
             Cancel
           </InputButton>
