@@ -1,29 +1,57 @@
 /* eslint-disable react/prop-types */
+import { useState } from "react";
+
 import InputButton from "./InputButton/InputButton";
 import styles from "./TodoItem.module.css";
 
 const TodoItem = ({
-  task,
+  todo,
   index,
-  onDelete,
+  deleteTodo,
   todos,
-  onCompleteChange,
+  setTodos,
+  handleCheckboxChange,
   isCompleted,
 }) => {
+  const [editingTodoIndex, setEditingTodoIndex] = useState(null);
+  const [editedTodo, setEditedTodo] = useState("");
+
+  const startEditing = (index) => {
+    setEditingTodoIndex(index);
+    setEditedTodo(todos[index]);
+  };
+
+  const cancelEditing = () => {
+    setEditingTodoIndex(null);
+    setEditedTodo("");
+  };
+
+  const saveEditedTodo = () => {
+    if (editedTodo !== "") {
+      const newTodos = [...todos];
+      newTodos[editingTodoIndex] = editedTodo;
+      setTodos(newTodos);
+      setEditingTodoIndex(null);
+      setEditedTodo("");
+    }
+  };
+
+  const handleEditTodoChange = (event) => {
+    setEditedTodo(event.target.value);
+  };
+
   return (
     <li key={index} className={styles.TodoItem}>
-      {todos.editingTaskIndex === index ? (
+      {editingTodoIndex === index ? (
         <>
           <input
             type="text"
-            value={todos.editedTodo || ""}
-            onChange={todos.handleEditTodoChange}
+            value={editedTodo || ""}
+            onChange={handleEditTodoChange}
           />
 
-          <InputButton onClick={() => todos.saveEditedTodo()}>Save</InputButton>
-          <InputButton onClick={() => todos.cancelEditing()}>
-            Cancel
-          </InputButton>
+          <InputButton onClick={() => saveEditedTodo()}>Save</InputButton>
+          <InputButton onClick={() => cancelEditing()}>Cancel</InputButton>
         </>
       ) : (
         <label
@@ -35,16 +63,16 @@ const TodoItem = ({
             type="checkbox"
             className={styles.checkbox_none}
             checked={isCompleted} // Отмечаем выполненные задачи
-            onChange={onCompleteChange}
+            onChange={handleCheckboxChange(index)}
           />
           <span className={styles.checkbox}></span>
           <div className={styles.task_buttons}>
-            {task}
+            {todo}
             <div className={styles.input_button}>
-              <InputButton onClick={() => todos.startEditing(index)}>
+              <InputButton onClick={() => startEditing(index)}>
                 <span className={styles.pencil_icon}></span>
               </InputButton>
-              <InputButton onClick={() => onDelete(index)}>
+              <InputButton onClick={() => deleteTodo(index)}>
                 <span className={styles.trash_icon}></span>
               </InputButton>
             </div>

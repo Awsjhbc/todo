@@ -35,7 +35,7 @@ const AddTodoForm = ({ addTodo }) => {
             value={value}
             onChange={onChange}
           />
-          <Button type="submit">
+          <Button type="submit" className="">
             Create{" "}
             <span className={styles.span_icon}>
               <img src={Plus} alt="" />
