@@ -62,7 +62,7 @@ const App = () => {
         todos={todos}
         deleteTodo={deleteTodo}
         setTodos={setTodos}
-        handleCheckboxChange={handleCheckboxChange}
+        handleCheckboxChange={() => handleCheckboxChange}
         isCompleted={completedTodos}
       />
       {/* ) : (
