@@ -1,38 +1,33 @@
 /* eslint-disable react/prop-types */
+import classNames from "classnames";
 import { useState } from "react";
 
-import InputButton from "./InputButton/InputButton";
 import styles from "./TodoItem.module.css";
+import InputButton from "./TodoItemButton/InputButton";
 
 const TodoItem = ({
   todo,
-  index,
   deleteTodo,
-  todos,
   setTodos,
   handleCheckboxChange,
   isCompleted,
 }) => {
-  const [editingTodoIndex, setEditingTodoIndex] = useState(null);
-  const [editedTodo, setEditedTodo] = useState("");
-
-  const startEditing = (index) => {
-    setEditingTodoIndex(index);
-    setEditedTodo(todos[index]);
-  };
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedTodo, setEditedTodo] = useState(todo.name);
 
   const cancelEditing = () => {
-    setEditingTodoIndex(null);
-    setEditedTodo("");
+    setIsEditing(false);
   };
 
   const saveEditedTodo = () => {
-    if (editedTodo !== "") {
-      const newTodos = [...todos];
-      newTodos[editingTodoIndex] = editedTodo;
-      setTodos(newTodos);
-      setEditingTodoIndex(null);
-      setEditedTodo("");
+    if (editedTodo.trim() !== "") {
+      setTodos((todos) => {
+        const newTodos = todos.map((t) =>
+          t.id === todo.id ? { ...t, name: editedTodo } : t
+        );
+        return newTodos;
+      });
+      setIsEditing(false);
     }
   };
 
@@ -41,45 +36,46 @@ const TodoItem = ({
   };
 
   return (
-    <li key={index} className={styles.TodoItem}>
-      {editingTodoIndex === index ? (
+    <div className={styles.TodoItem}>
+      {isEditing ? (
         <>
           <input
             type="text"
-            value={editedTodo || ""}
+            value={editedTodo}
             onChange={handleEditTodoChange}
           />
-
-          <InputButton onClick={() => saveEditedTodo()}>Save</InputButton>
+          <InputButton onClick={() => saveEditedTodo(todo, todo.id)}>
+            Save
+          </InputButton>
           <InputButton onClick={() => cancelEditing()}>Cancel</InputButton>
         </>
       ) : (
         <label
-          className={`${styles.label} ${
-            isCompleted ? styles["completed"] : ""
-          }`}
+          className={classNames(styles.label, {
+            [styles.completed]: isCompleted,
+          })}
         >
           <input
             type="checkbox"
             className={styles.checkbox_none}
             checked={isCompleted} // Отмечаем выполненные задачи
-            onChange={handleCheckboxChange(index)}
+            onChange={() => handleCheckboxChange(todo.id)}
           />
           <span className={styles.checkbox}></span>
-          <div className={styles.task_buttons}>
-            {todo}
+          <div className={styles.todo_buttons}>
+            {todo.name}
             <div className={styles.input_button}>
-              <InputButton onClick={() => startEditing(index)}>
+              <InputButton onClick={() => setIsEditing(true)}>
                 <span className={styles.pencil_icon}></span>
               </InputButton>
-              <InputButton onClick={() => deleteTodo(index)}>
+              <InputButton onClick={() => deleteTodo(todo.id)}>
                 <span className={styles.trash_icon}></span>
               </InputButton>
             </div>
           </div>
         </label>
       )}
-    </li>
+    </div>
   );
 };
 

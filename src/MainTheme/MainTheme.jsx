@@ -1,5 +1,5 @@
+import Clipboard from "../assets/Clipboard.png";
 import styles from "./MainTheme.module.css";
-import Clipboard from "../../../assets/Clipboard.png";
 
 const MainTheme = () => {
   return (

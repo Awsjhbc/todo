@@ -1,16 +1,22 @@
-import "./App.css";
-
 import { useState } from "react";
 
+import styles from "./App.module.css";
+import rocketLogo from "./assets/rocketLogo.svg";
 import AddTodoForm from "./components/AddTodoForm/AddTodoForm";
-import MainTheme from "./components/EmptyPanel/MainTheme/MainTheme";
-import todoLogo from "./components/icon/rocket.svg";
 import TodoList from "./components/TodoList/TodoList";
+import MainTheme from "./MainTheme/MainTheme";
+
+const DEFAULT_TODO_LIST = [
+  { id: 1, name: "todo 1", checked: false },
+  { id: 2, name: "todo 2", checked: false },
+  { id: 3, name: "todo 3", checked: false },
+];
 
 const App = () => {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(DEFAULT_TODO_LIST);
   const [completedTodos, setCompletedTodos] = useState([]);
-  const [isTodosAdded, setIsTodosAdded] = useState(false);
+  const [isTodosAdded, setIsTodosAdded] = useState(true);
+  const [todoCount, setTodoCount] = useState(0);
 
   const TodoAdded = () => {
     setIsTodosAdded(true);
@@ -18,56 +24,61 @@ const App = () => {
 
   const addTodo = (todo) => {
     if (todo.trim() !== "") {
-      setTodos([...todos, todo]);
+      const newTodo = { id: todos.length + 1, name: todo, checked: false };
+      setTodos([...todos, newTodo]);
 
-      // setTodoCount(todoCount + 1);
+      setTodoCount(todoCount + 1);
       TodoAdded();
     }
   };
 
-  const handleCheckboxChange = (index) => {
-    const updatedCompletedTodos = completedTodos.includes(index)
-      ? completedTodos.filter((id) => id !== index)
-      : [...completedTodos, index];
+  const handleCheckboxChange = (id) => {
+    const updatedTodos = todos.map((todo) =>
+      todo.id === id ? { ...todo, checked: !todo.checked } : todo
+    );
+    setTodos(updatedTodos);
 
+    const updatedCompletedTodos = updatedTodos
+      .filter((todo) => todo.checked)
+      .map((todo) => todo.id);
     setCompletedTodos(updatedCompletedTodos);
   };
 
-  const deleteTodo = (index) => {
-    const newTodos = [...todos];
-    newTodos.splice(index, 1);
+  const deleteTodo = (id) => {
+    const updatedTodos = todos.filter((todo) => todo.id !== id);
+    setTodos(updatedTodos);
 
-    const updatedCompletedTodos = completedTodos.filter((id) => id !== index);
-    const adjustedCompletedTodos = updatedCompletedTodos.map((id) =>
-      id > index ? id - 1 : id
+    const updatedCompletedTodos = completedTodos.filter(
+      (completedId) => completedId !== id
     );
 
-    setTodos(newTodos);
-    setCompletedTodos(adjustedCompletedTodos);
-
-    // setTodoCount(todoCount - 1);
+    setCompletedTodos(updatedCompletedTodos);
+    setTodoCount(todoCount - 1);
   };
-
+  // console.log(todos);
   return (
     <>
-      <div className="header">
-        <div className="logo">
-          <img src={todoLogo} alt="" />
-          <p className="leftLogoText">to</p> <p className="rightLogoText">do</p>
+      <div className={styles.header}>
+        <div className={styles.logo}>
+          <img src={rocketLogo} alt="" />
+          <p className={styles.leftLogoText}>to</p>{" "}
+          <p className={styles.rightLogoText}>do</p>
         </div>
       </div>
       <AddTodoForm addTodo={addTodo} />
-      {/* {isTodosAdded ? ( */}
-      <TodoList
-        todos={todos}
-        deleteTodo={deleteTodo}
-        setTodos={setTodos}
-        handleCheckboxChange={() => handleCheckboxChange}
-        isCompleted={completedTodos}
-      />
-      {/* ) : (
-        <MainTheme />
-      )} */}
+      {isTodosAdded ? (
+        <TodoList
+          todos={todos}
+          deleteTodo={deleteTodo}
+          setTodos={setTodos}
+          handleCheckboxChange={handleCheckboxChange}
+          isCompleted={completedTodos}
+        />
+      ) : (
+        <div className={styles.empty}>
+          <MainTheme />
+        </div>
+      )}
     </>
   );
 };

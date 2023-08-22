@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 
-import Plus from "../../assets/plus.svg";
-import Button from "../Button/Button";
+import plusIcon from "../../assets/plusIcon.svg";
 import styles from "./AddTodoForm.module.css";
+import Button from "./Button/Button";
 
 const DEFAULT_INPUT_VALUE = "";
 
@@ -18,7 +18,8 @@ const AddTodoForm = ({ addTodo }) => {
     setValue(event.target.value);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
     onSubmit(value);
     setValue(DEFAULT_INPUT_VALUE);
   };
@@ -26,19 +27,19 @@ const AddTodoForm = ({ addTodo }) => {
   return (
     <form onSubmit={handleSubmit}>
       <div className={styles.input}>
-        <div className="createTask">
+        <div className={styles.createTodo}>
           <input
             name="description"
             type="text"
-            className="input"
-            placeholder="Create new task"
+            className={styles.input}
+            placeholder="Create new todo"
             value={value}
             onChange={onChange}
           />
-          <Button type="submit" className="">
+          <Button type="submit">
             Create{" "}
             <span className={styles.span_icon}>
-              <img src={Plus} alt="" />
+              <img src={plusIcon} alt="" />
             </span>{" "}
           </Button>
         </div>
