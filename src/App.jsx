@@ -1,35 +1,41 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import styles from "./App.module.css";
 import rocketLogo from "./assets/rocketLogo.svg";
 import AddTodoForm from "./components/AddTodoForm/AddTodoForm";
 import TodoList from "./components/TodoList/TodoList";
 import MainTheme from "./MainTheme/MainTheme";
+import {
+  fetchAddTodo,
+  fetchData,
+  fetchDeleteTodo,
+  fetchEditTodo,
+} from "./utils/Requests";
 
-const DEFAULT_TODO_LIST = [
-  { id: 1, name: "todo 1", checked: false },
-  { id: 2, name: "todo 2", checked: false },
-  { id: 3, name: "todo 3", checked: false },
-];
+// const DEFAULT_TODO_LIST = [
+//   { id: 1, name: "todo 1", checked: false },
+//   { id: 2, name: "todo 2", checked: false },
+//   { id: 3, name: "todo 3", checked: false },
+// ];
 
 const App = () => {
-  const [todos, setTodos] = useState(DEFAULT_TODO_LIST);
+  const [todos, setTodos] = useState([]);
   const [completedTodos, setCompletedTodos] = useState([]);
-  const [isTodosAdded, setIsTodosAdded] = useState(true);
-  const [todoCount, setTodoCount] = useState(0);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedTodo, setEditedTodo] = useState("");
 
-  const TodoAdded = () => {
-    setIsTodosAdded(true);
-  };
+  // isloading
 
-  const addTodo = (todo) => {
-    if (todo.trim() !== "") {
-      const newTodo = { id: todos.length + 1, name: todo, checked: false };
-      setTodos([...todos, newTodo]);
+  useEffect(() => {
+    const handleFetchData = async () => {
+      await fetchData(setTodos, setCompletedTodos);
+    };
+    return handleFetchData;
+  }, []);
 
-      setTodoCount(todoCount + 1);
-      TodoAdded();
-    }
+  const addTodo = async (todo) => {
+    await fetchAddTodo(todo);
+    setTodos([...todos, todo]);
   };
 
   const handleCheckboxChange = (id) => {
@@ -44,18 +50,35 @@ const App = () => {
     setCompletedTodos(updatedCompletedTodos);
   };
 
-  const deleteTodo = (id) => {
+  const deleteTodo = async (id) => {
+    await fetchDeleteTodo(id);
     const updatedTodos = todos.filter((todo) => todo.id !== id);
     setTodos(updatedTodos);
-
-    const updatedCompletedTodos = completedTodos.filter(
-      (completedId) => completedId !== id
-    );
-
-    setCompletedTodos(updatedCompletedTodos);
-    setTodoCount(todoCount - 1);
   };
-  // console.log(todos);
+
+  const cancelEditing = () => {
+    setIsEditing(false);
+  };
+
+  const saveEditedTodo = async (todo) => {
+    if (editedTodo.trim()) {
+      const updatedTodo = { ...todo, name: editedTodo };
+      await fetchEditTodo(todo, updatedTodo);
+      setTodos((todos) => {
+        const newTodos = todos.map((t) =>
+          t.id === todo.id ? { ...t, name: editedTodo } : t
+        );
+        return newTodos;
+      });
+
+      setIsEditing(false);
+    }
+  };
+
+  const handleEditTodoChange = (event) => {
+    setEditedTodo(event.target.value);
+  };
+
   return (
     <>
       <div className={styles.header}>
@@ -65,14 +88,19 @@ const App = () => {
           <p className={styles.rightLogoText}>do</p>
         </div>
       </div>
-      <AddTodoForm addTodo={addTodo} />
-      {isTodosAdded ? (
+      <AddTodoForm addTodo={addTodo} todos={todos} />
+      {todos.length ? (
         <TodoList
           todos={todos}
           deleteTodo={deleteTodo}
-          setTodos={setTodos}
           handleCheckboxChange={handleCheckboxChange}
           isCompleted={completedTodos}
+          isEditing={isEditing}
+          cancelEditing={cancelEditing}
+          saveEditedTodo={saveEditedTodo}
+          handleEditTodoChange={handleEditTodoChange}
+          editedTodo={editedTodo}
+          setIsEditing={setIsEditing}
         />
       ) : (
         <div className={styles.empty}>

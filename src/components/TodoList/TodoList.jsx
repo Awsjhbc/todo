@@ -7,9 +7,14 @@ import styles from "./TodoList.module.css";
 const TodoList = ({
   todos,
   deleteTodo,
-  setTodos,
   handleCheckboxChange,
   isCompleted,
+  isEditing,
+  cancelEditing,
+  saveEditedTodo,
+  handleEditTodoChange,
+  editedTodo,
+  setIsEditing,
 }) => {
   return (
     <>
@@ -34,9 +39,14 @@ const TodoList = ({
                   <TodoItem
                     todo={todo}
                     deleteTodo={() => deleteTodo(todo.id)}
-                    setTodos={setTodos}
                     handleCheckboxChange={() => handleCheckboxChange(todo.id)}
                     isCompleted={isCompleted.includes(todo.id)}
+                    isEditing={isEditing}
+                    cancelEditing={cancelEditing}
+                    saveEditedTodo={saveEditedTodo}
+                    handleEditTodoChange={handleEditTodoChange}
+                    editedTodo={editedTodo}
+                    setIsEditing={setIsEditing}
                   />
                 </li>
               ))}

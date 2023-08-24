@@ -8,33 +8,15 @@ import InputButton from "./TodoItemButton/InputButton";
 const TodoItem = ({
   todo,
   deleteTodo,
-  setTodos,
   handleCheckboxChange,
   isCompleted,
+  isEditing,
+  cancelEditing,
+  saveEditedTodo,
+  handleEditTodoChange,
+  editedTodo,
+  setIsEditing,
 }) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedTodo, setEditedTodo] = useState(todo.name);
-
-  const cancelEditing = () => {
-    setIsEditing(false);
-  };
-
-  const saveEditedTodo = () => {
-    if (editedTodo.trim() !== "") {
-      setTodos((todos) => {
-        const newTodos = todos.map((t) =>
-          t.id === todo.id ? { ...t, name: editedTodo } : t
-        );
-        return newTodos;
-      });
-      setIsEditing(false);
-    }
-  };
-
-  const handleEditTodoChange = (event) => {
-    setEditedTodo(event.target.value);
-  };
-
   return (
     <div className={styles.TodoItem}>
       {isEditing ? (

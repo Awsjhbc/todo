@@ -7,12 +7,8 @@ import Button from "./Button/Button";
 
 const DEFAULT_INPUT_VALUE = "";
 
-const AddTodoForm = ({ addTodo }) => {
+const AddTodoForm = ({ addTodo, todos }) => {
   const [value, setValue] = useState(DEFAULT_INPUT_VALUE);
-
-  const onSubmit = (value) => {
-    addTodo(value);
-  };
 
   const onChange = (event) => {
     setValue(event.target.value);
@@ -20,7 +16,14 @@ const AddTodoForm = ({ addTodo }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    onSubmit(value);
+
+    const todo = {
+      id: todos.length + 1,
+      name: value,
+      checked: false,
+    };
+
+    addTodo(todo);
     setValue(DEFAULT_INPUT_VALUE);
   };
 
