@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import { useContext, useState } from "react";
 
-import { MyContext } from "../../App";
 import plusIcon from "../../assets/plusIcon.svg";
+import MyContext from "../../utils/MyContext";
 import styles from "./AddTodoForm.module.css";
 import Button from "./Button/Button";
 

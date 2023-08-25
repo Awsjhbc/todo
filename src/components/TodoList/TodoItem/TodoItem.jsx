@@ -18,7 +18,7 @@ const TodoItem = ({
 }) => {
   return (
     <div className={styles.TodoItem}>
-      {isEditing ? (
+      {isEditing === todo.id ? (
         <>
           <input
             type="text"
@@ -46,7 +46,7 @@ const TodoItem = ({
           <div className={styles.todo_buttons}>
             {todo.name}
             <div className={styles.input_button}>
-              <InputButton onClick={() => setIsEditing(true)}>
+              <InputButton onClick={() => setIsEditing(todo.id)}>
                 <span className={styles.pencil_icon}></span>
               </InputButton>
               <InputButton onClick={() => deleteTodo(todo.id)}>

@@ -2,7 +2,7 @@
 
 import { useContext } from "react";
 
-import { MyContext } from "../../App";
+import MyContext from "../../utils/MyContext";
 import TodoItem from "./TodoItem/TodoItem";
 import styles from "./TodoList.module.css";
 
@@ -12,7 +12,6 @@ const TodoList = () => {
     todos,
     deleteTodo,
     handleCheckboxChange,
-
     isEditing,
     cancelEditing,
     saveEditedTodo,

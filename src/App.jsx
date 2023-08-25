@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { createContext } from "react";
 
 import styles from "./App.module.css";
 import rocketLogo from "./assets/rocketLogo.svg";
@@ -7,6 +6,7 @@ import AddTodoForm from "./components/AddTodoForm/AddTodoForm";
 import { LoadingSpinner } from "./components/Loading/Loading";
 import TodoList from "./components/TodoList/TodoList";
 import MainTheme from "./MainTheme/MainTheme";
+import MyContext from "./utils/MyContext";
 import {
   fetchAddTodo,
   fetchData,
@@ -14,18 +14,8 @@ import {
   fetchEditTodo,
 } from "./utils/Requests";
 
-// const DEFAULT_TODO_LIST = [
-//   { id: 1, name: "todo 1", checked: false },
-//   { id: 2, name: "todo 2", checked: false },
-//   { id: 3, name: "todo 3", checked: false },
-// ];
-
-export const MyContext = createContext();
-
 const App = () => {
   const [todos, setTodos] = useState([]);
-  // переделать комплитед
-
   const [isEditing, setIsEditing] = useState(false);
   const [editedTodo, setEditedTodo] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -73,8 +63,8 @@ const App = () => {
       const updatedTodo = { ...todo, name: editedTodo };
       await fetchEditTodo(todo, updatedTodo);
       setTodos((todos) => {
-        const newTodos = todos.map((t) =>
-          t.id === todo.id ? { ...t, name: editedTodo } : t
+        const newTodos = todos.map((toEdit) =>
+          toEdit.id === todo.id ? { ...toEdit, name: editedTodo } : toEdit
         );
         return newTodos;
       });
@@ -100,7 +90,6 @@ const App = () => {
         value={{
           deleteTodo,
           handleCheckboxChange,
-
           isEditing,
           cancelEditing,
           saveEditedTodo,
@@ -112,7 +101,6 @@ const App = () => {
         }}
       >
         <AddTodoForm />
-
         {isLoading && <LoadingSpinner />}
         {!isLoading && (
           <>

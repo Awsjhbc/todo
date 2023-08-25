@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 export const fetchData = async () =>
   await fetch("http://localhost:31299/todos").then((res) => res.json());
 
