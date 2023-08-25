@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { createContext } from "react";
 
 import styles from "./App.module.css";
 import rocketLogo from "./assets/rocketLogo.svg";
 import AddTodoForm from "./components/AddTodoForm/AddTodoForm";
+import { LoadingSpinner } from "./components/Loading/Loading";
 import TodoList from "./components/TodoList/TodoList";
 import MainTheme from "./MainTheme/MainTheme";
 import {
@@ -18,22 +20,33 @@ import {
 //   { id: 3, name: "todo 3", checked: false },
 // ];
 
+export const MyContext = createContext();
+
 const App = () => {
   const [todos, setTodos] = useState([]);
-  const [completedTodos, setCompletedTodos] = useState([]);
+  // переделать комплитед
+
   const [isEditing, setIsEditing] = useState(false);
   const [editedTodo, setEditedTodo] = useState("");
-
-  // isloading
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const handleFetchData = async () => {
-      await fetchData(setTodos, setCompletedTodos);
+      const data = await fetchData();
+
+      setTodos(data);
+
+      setIsLoading(false);
     };
     return handleFetchData;
   }, []);
 
-  const addTodo = async (todo) => {
+  const addTodo = async (name) => {
+    const todo = {
+      id: todos.length + 1,
+      name: name,
+      checked: false,
+    };
     await fetchAddTodo(todo);
     setTodos([...todos, todo]);
   };
@@ -43,11 +56,6 @@ const App = () => {
       todo.id === id ? { ...todo, checked: !todo.checked } : todo
     );
     setTodos(updatedTodos);
-
-    const updatedCompletedTodos = updatedTodos
-      .filter((todo) => todo.checked)
-      .map((todo) => todo.id);
-    setCompletedTodos(updatedCompletedTodos);
   };
 
   const deleteTodo = async (id) => {
@@ -80,7 +88,7 @@ const App = () => {
   };
 
   return (
-    <>
+    <div className={styles.appTest}>
       <div className={styles.header}>
         <div className={styles.logo}>
           <img src={rocketLogo} alt="" />
@@ -88,26 +96,37 @@ const App = () => {
           <p className={styles.rightLogoText}>do</p>
         </div>
       </div>
-      <AddTodoForm addTodo={addTodo} todos={todos} />
-      {todos.length ? (
-        <TodoList
-          todos={todos}
-          deleteTodo={deleteTodo}
-          handleCheckboxChange={handleCheckboxChange}
-          isCompleted={completedTodos}
-          isEditing={isEditing}
-          cancelEditing={cancelEditing}
-          saveEditedTodo={saveEditedTodo}
-          handleEditTodoChange={handleEditTodoChange}
-          editedTodo={editedTodo}
-          setIsEditing={setIsEditing}
-        />
-      ) : (
-        <div className={styles.empty}>
-          <MainTheme />
-        </div>
-      )}
-    </>
+      <MyContext.Provider
+        value={{
+          deleteTodo,
+          handleCheckboxChange,
+
+          isEditing,
+          cancelEditing,
+          saveEditedTodo,
+          handleEditTodoChange,
+          editedTodo,
+          setIsEditing,
+          addTodo,
+          todos,
+        }}
+      >
+        <AddTodoForm />
+
+        {isLoading && <LoadingSpinner />}
+        {!isLoading && (
+          <>
+            {todos.length ? (
+              <TodoList />
+            ) : (
+              <div className={styles.empty}>
+                <MainTheme />
+              </div>
+            )}
+          </>
+        )}
+      </MyContext.Provider>
+    </div>
   );
 };
 

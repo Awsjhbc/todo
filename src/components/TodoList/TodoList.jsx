@@ -1,21 +1,25 @@
 /* eslint-disable react/prop-types */
 
+import { useContext } from "react";
+
+import { MyContext } from "../../App";
 import TodoItem from "./TodoItem/TodoItem";
 import styles from "./TodoList.module.css";
 
 // eslint-disable-next-line react/prop-types
-const TodoList = ({
-  todos,
-  deleteTodo,
-  handleCheckboxChange,
-  isCompleted,
-  isEditing,
-  cancelEditing,
-  saveEditedTodo,
-  handleEditTodoChange,
-  editedTodo,
-  setIsEditing,
-}) => {
+const TodoList = () => {
+  const {
+    todos,
+    deleteTodo,
+    handleCheckboxChange,
+
+    isEditing,
+    cancelEditing,
+    saveEditedTodo,
+    handleEditTodoChange,
+    editedTodo,
+    setIsEditing,
+  } = useContext(MyContext);
   return (
     <>
       <div className={styles.todo_body}>
@@ -28,7 +32,7 @@ const TodoList = ({
             </div>
             <div>
               <p className={styles.completed_text}>
-                Completed tasks {isCompleted.length}
+                Completed tasks {todos.filter((todo) => todo.checked).length}
               </p>
             </div>
           </div>
@@ -40,7 +44,7 @@ const TodoList = ({
                     todo={todo}
                     deleteTodo={() => deleteTodo(todo.id)}
                     handleCheckboxChange={() => handleCheckboxChange(todo.id)}
-                    isCompleted={isCompleted.includes(todo.id)}
+                    isCompleted={todo.checked}
                     isEditing={isEditing}
                     cancelEditing={cancelEditing}
                     saveEditedTodo={saveEditedTodo}

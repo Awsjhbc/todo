@@ -1,14 +1,7 @@
 import { useEffect } from "react";
 
-export const fetchData = async (setTodos, setCompletedTodos) => {
-  const response = await fetch("http://localhost:31299/todos");
-  const data = await response.json();
-
-  setTodos(data);
-
-  const completed = data.filter((todo) => todo.checked);
-  setCompletedTodos(completed);
-};
+export const fetchData = async () =>
+  await fetch("http://localhost:31299/todos").then((res) => res.json());
 
 export const fetchAddTodo = async (todo) => {
   const response = await fetch("http://localhost:31299/todos", {
@@ -18,6 +11,7 @@ export const fetchAddTodo = async (todo) => {
     },
     body: JSON.stringify(todo),
   });
+  return response;
 };
 
 export const fetchDeleteTodo = async (id) => {
@@ -27,6 +21,7 @@ export const fetchDeleteTodo = async (id) => {
       "Content-type": "application/json",
     },
   });
+  return response;
 };
 
 export const fetchEditTodo = async (todo, updatedTodo) => {
@@ -37,4 +32,20 @@ export const fetchEditTodo = async (todo, updatedTodo) => {
     },
     body: JSON.stringify(updatedTodo),
   });
+  return response;
+};
+
+export const fetchLoading = async () => {
+  const response = await fetch("http://localhost:31299/todos").then(
+    (response) => response.json()
+  );
+  // .then((response) => {
+
+  //    // Optional code to simulate delay
+  //    // setTimeout(() => {
+  //    //   setUsers(respose.data);
+  //    //   setIsLoading(false);
+  //    // }, 3000);
+  // })
+  return response;
 };

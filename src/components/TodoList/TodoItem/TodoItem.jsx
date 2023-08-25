@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import classNames from "classnames";
-import { useState } from "react";
 
 import styles from "./TodoItem.module.css";
 import InputButton from "./TodoItemButton/InputButton";
@@ -40,7 +39,7 @@ const TodoItem = ({
           <input
             type="checkbox"
             className={styles.checkbox_none}
-            checked={isCompleted} // Отмечаем выполненные задачи
+            checked={isCompleted}
             onChange={() => handleCheckboxChange(todo.id)}
           />
           <span className={styles.checkbox}></span>

@@ -1,14 +1,17 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useContext, useState } from "react";
 
+import { MyContext } from "../../App";
 import plusIcon from "../../assets/plusIcon.svg";
 import styles from "./AddTodoForm.module.css";
 import Button from "./Button/Button";
 
 const DEFAULT_INPUT_VALUE = "";
 
-const AddTodoForm = ({ addTodo, todos }) => {
+const AddTodoForm = () => {
   const [value, setValue] = useState(DEFAULT_INPUT_VALUE);
+
+  const { addTodo } = useContext(MyContext);
 
   const onChange = (event) => {
     setValue(event.target.value);
@@ -17,13 +20,7 @@ const AddTodoForm = ({ addTodo, todos }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const todo = {
-      id: todos.length + 1,
-      name: value,
-      checked: false,
-    };
-
-    addTodo(todo);
+    addTodo(value);
     setValue(DEFAULT_INPUT_VALUE);
   };
 
